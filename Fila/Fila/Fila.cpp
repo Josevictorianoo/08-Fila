@@ -1,4 +1,6 @@
 #include <iostream>
+#include <cstdlib> // Necessário para malloc e free
+
 using namespace std;
 
 // definicao de tipo
@@ -58,7 +60,6 @@ void menu()
 
 void inicializar()
 {
-
 	// se a lista já possuir elementos
 	// libera a memoria ocupada
 	NO* aux = inicio;
@@ -71,16 +72,15 @@ void inicializar()
 	inicio = NULL;
 	fim = NULL;
 	cout << "Fila inicializada \n";
-
 }
 
 
 void insere()
 {
-	// aloca memoria dinamicamente para o novo elemento
 	NO* novo = (NO*)malloc(sizeof(NO));
 	if (novo == NULL)
 	{
+		cout << "Erro: Memoria insuficiente!\n";
 		return;
 	}
 
@@ -88,13 +88,35 @@ void insere()
 	cin >> novo->valor;
 	novo->prox = NULL;
 
+	
+	if (inicio == NULL) {
+		inicio = novo;
+		fim = novo;
+	}
 
+	else {
+		fim->prox = novo;
+		fim = novo;
+	}
+
+	cout << "Elemento " << novo->valor << " inserido com sucesso!\n";
 }
 
 void remove()
 {
+	if (inicio == NULL) {
+		cout << "Fila Vazia\n";
+		return;
+	}
 
+	NO* aux = inicio;
+	cout << "Elemento removido: " << aux->valor << "\n";
 
+	inicio = inicio->prox;
 
+	if (inicio == NULL) {
+		fim = NULL;
+	}
+
+	free(aux);
 }
-
